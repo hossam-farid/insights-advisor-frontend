@@ -7,15 +7,6 @@ import {
 } from '../../AppConstants';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  Table,
-  TableVariant,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from '@patternfly/react-table';
 import { t_global_background_color_200 } from '@patternfly/react-tokens';
 
 export const TablePage = ({ systems, styles }) => {
@@ -55,12 +46,18 @@ export const TablePage = ({ systems, styles }) => {
   ];
 
   const headerBuilder = ({ value, style }) => (
-    <Th style={{ ...style, ...styles.header, ...styles.bold }}>{value}</Th>
+    <th
+      scope="col"
+      className="pf-v6-c-table__th"
+      style={{ ...style, ...styles.header, ...styles.bold }}
+    >
+      {value}
+    </th>
   );
   const rowBuilder = ({ value }) => (
-    <Td noPadding={true} style={styles.row}>
+    <td className="pf-v6-c-table__td pf-m-no-padding" style={styles.row}>
       {value}
-    </Td>
+    </td>
   );
   const rows = [
     ...systems.map((system, idx) => {
@@ -77,15 +74,15 @@ export const TablePage = ({ systems, styles }) => {
         backgroundColor: t_global_background_color_200.var,
       };
       return (
-        <Tr
-          noPadding={true}
+        <tr
           key={`${system.display_name}`}
+          className="pf-v6-c-table__tr"
           style={isOddRow ? customStyle : {}}
         >
-          <Td
+          <td
             key={system.system_uuid}
+            className="pf-v6-c-table__td pf-m-no-padding"
             style={{ ...styles.nameColumn }}
-            noPadding={true}
           >
             <a
               style={styles.link}
@@ -93,35 +90,42 @@ export const TablePage = ({ systems, styles }) => {
             >
               {system.display_name}
             </a>
-          </Td>
+          </td>
           {...hitColumns.map((item) =>
             rowBuilder({
               value: system[item],
             }),
           )}
-          <Td
+          <td
             key={system.last_seen}
+            className="pf-v6-c-table__td pf-m-no-padding"
             style={{ ...styles.row, ...styles.lastSeenRow }}
-            noPadding={true}
-          >{`${sysDate}`}</Td>
-        </Tr>
+          >{`${sysDate}`}</td>
+        </tr>
       );
     }),
   ];
 
+  // Plain elements with PatternFly's class names: a PDF is never interactive,
+  // so it keeps the styling without the hooks PatternFly runs for every cell.
   return (
-    <Table
+    <table
       aria-label={'export-table'}
-      ouiaId={'export-table'}
-      variant={TableVariant.compact}
+      role="grid"
+      className="pf-v6-c-table pf-m-grid-md pf-m-compact"
+      data-ouia-component-type="PF6/Table"
+      data-ouia-safe="true"
+      data-ouia-component-id="export-table"
     >
-      <Thead>
+      <thead className="pf-v6-c-table__thead">
         {header.map((colHeader) =>
           headerBuilder({ value: colHeader.value, style: colHeader.style }),
         )}
-      </Thead>
-      <Tbody>{rows.map((row) => row)}</Tbody>
-    </Table>
+      </thead>
+      <tbody role="rowgroup" className="pf-v6-c-table__tbody">
+        {rows.map((row) => row)}
+      </tbody>
+    </table>
   );
 };
 

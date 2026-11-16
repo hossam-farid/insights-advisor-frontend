@@ -5,15 +5,6 @@ import { Text } from '@react-pdf/renderer';
 import { ChartPie } from '@patternfly/react-charts/victory';
 import { Flex, FlexItem } from '@patternfly/react-core';
 import {
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  TableVariant,
-} from '@patternfly/react-table';
-import {
   t_global_text_color_status_danger_default,
   t_global_background_color_200,
   chart_color_red_orange_400,
@@ -36,33 +27,53 @@ const RecommendationCharts = ({
       </Text>
       <Flex defaultspaceItems={{ default: 'spaceItemsLg' }}>
         <FlexItem style={{ width: '40%' }}>
-          <Table
+          {/* Plain elements with PatternFly's class names: a PDF is never interactive,
+              so it keeps the styling without the hooks PatternFly runs for every cell. */}
+          <table
             aria-label={'recommendation-chart-table'}
-            ouiaId={'recommendation-chart-table'}
-            variant={TableVariant.compact}
+            role="grid"
+            className="pf-v6-c-table pf-m-grid-md pf-m-compact"
+            data-ouia-component-type="PF6/Table"
+            data-ouia-safe="true"
+            data-ouia-component-id="recommendation-chart-table"
           >
-            <Thead>
-              <Tr>
-                <Th>{columnHeader}</Th>
-                <Th>{POUND_OF_RECS}</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
+            <thead className="pf-v6-c-table__thead">
+              <tr className="pf-v6-c-table__tr">
+                <th scope="col" className="pf-v6-c-table__th">
+                  {columnHeader}
+                </th>
+                <th scope="col" className="pf-v6-c-table__th">
+                  {POUND_OF_RECS}
+                </th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup" className="pf-v6-c-table__tbody">
               {rows.map((item, index) => (
-                <Tr
+                <tr
                   key={`${columnHeader}-row-${index}`}
+                  className="pf-v6-c-table__tr"
                   style={{
                     backgroundColor:
                       (index + 1) % 2 && t_global_background_color_200.value,
                     fontSize: '12px',
                   }}
                 >
-                  <Td style={{ fontSize: '12px' }}>{item[0]}</Td>
-                  <Td style={{ fontSize: '12px' }}>{item[1]}</Td>
-                </Tr>
+                  <td
+                    className="pf-v6-c-table__td"
+                    style={{ fontSize: '12px' }}
+                  >
+                    {item[0]}
+                  </td>
+                  <td
+                    className="pf-v6-c-table__td"
+                    style={{ fontSize: '12px' }}
+                  >
+                    {item[1]}
+                  </td>
+                </tr>
               ))}
-            </Tbody>
-          </Table>
+            </tbody>
+          </table>
         </FlexItem>
         <FlexItem
           alignSelf={{ default: 'alignSelfStretch' }}
