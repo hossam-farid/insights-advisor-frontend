@@ -82,7 +82,7 @@ export const TablePage = ({ systems, styles }) => {
           <td
             key={system.system_uuid}
             className="pf-v6-c-table__td pf-m-no-padding"
-            style={{ ...styles.nameColumn }}
+            style={{ ...styles.nameColumn, position: 'static' }}
           >
             <a
               style={styles.link}

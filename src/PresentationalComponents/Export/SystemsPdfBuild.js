@@ -47,7 +47,10 @@ const styles = StyleSheet.create({
     paddingBottom: t_global_spacer_sm.value,
     paddingTop: t_global_spacer_sm.value,
   },
+  // PatternFly positions every table cell, and Chrome prints each positioned box as
+  // its own layer. Body cells are unpositioned, so a row prints as one piece.
   row: {
+    position: 'static',
     fontSize: 8,
     paddingTop: '1px',
     paddingBottom: '1px',
